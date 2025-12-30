@@ -30,17 +30,18 @@ export async function proxy(request: NextRequest) {
 
     return NextResponse.next();
   }
+  // Когда нет accessToken ( есть refreshToken )
+ 
 
-  // ------------------------------------------
-  // 2️⃣ Если нет accessToken, но есть refreshToken
-  // ------------------------------------------
+
+
   if (!accessToken && refreshToken) {
     try {
       const sessionRes = await checkSession();
       const setCookieHeader = sessionRes.headers['set-cookie'];
 
       if (setCookieHeader) {
-        // Создаем ответ: redirect для public route или next для private
+        
         const response = isPublicRoute
           ? NextResponse.redirect(new URL('/', request.url))
           : NextResponse.next();
